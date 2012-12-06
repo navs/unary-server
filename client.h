@@ -15,7 +15,7 @@
 #include <Winsock2.h>
 typedef int socklen_t;
 #endif
-#ifdef Linux
+#if defined(Linux) || defined(Darwin)
 #include <sys/socket.h>
 #define closesocket close
 #endif

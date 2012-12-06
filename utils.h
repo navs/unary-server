@@ -16,7 +16,7 @@
 //
 
 int daemonize() {
-#ifdef Linux
+#if defined(Linux) || defined(Darwin)
 	pid_t pid = fork();
 	if (pid < 0) {
 		std::cerr << "fork() error.\n";
@@ -105,14 +105,20 @@ std::string timestamp(const std::string& fmt = "")
 {
 	time_t now = time(NULL);
 	struct tm t;
-#ifdef Linux
+#if defined(Linux) || defined(Darwin)
 	localtime_r(&now, &t);
 #elif defined(WIN32)
 	localtime_s(&t, &now);
 #endif
 	char buffer[256];
+
+#ifndef Darwin
 	sprintf_s(buffer, "%04d%02d%02d.%02d%02d%02d",
 		t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
+#else
+	sprintf(buffer, "%04d%02d%02d.%02d%02d%02d",
+		t.tm_year+1900, t.tm_mon+1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
+#endif
 	return std::string(buffer);
 }
 

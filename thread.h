@@ -4,10 +4,10 @@
 //		author:	KIM Hyuntak
 //		date:	2009-01-08
 
-#ifdef Linux
+#if defined(Linux) || defined(Darwin)
 
 #include <pthread.h>
-typedef pthread_t tid_t
+typedef pthread_t tid_t;
 #define exit_thread	pthread_exit
 #define join_thread(id,ret) pthread_join(id, ret)
 #define create_thread(id, f, p) pthread_create(&id, NULL, f, p)
@@ -30,14 +30,14 @@ public:
 	thread() { }
 	virtual ~thread() { }
 
-	int wait() { int ret; join_thread(m_id, ret); return ret; } 
+	int wait() { int ret; join_thread(m_id, (void**)&ret); return ret; } 
 	//int t_start() {return pthread_create(&m_id,NULL,thread::TF,(void*)this);}
 	void t_start() { create_thread(m_id, thread::TF, this); }
 
 protected:
 
 	virtual void main() { }
-#ifdef Linux
+#if defined(Linux) || defined(Darwin)
 	static void* TF(void* arg)
 #endif
 #ifdef WIN32

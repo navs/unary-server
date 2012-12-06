@@ -14,7 +14,7 @@
 #ifdef WIN32
 #define SLEEP(s) Sleep(s*1000)
 #endif
-#ifdef Linux
+#if defined(Linux) || defined(Darwin)
 #define SLEEP sleep
 #endif
 

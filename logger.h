@@ -110,7 +110,7 @@ protected:
 			//  make log data  to write
 			va_list ap;
 
-#ifdef Linux
+#if defined(Linux) || defined(Darwin)
 			va_start(ap, fmt);
 			int len = std::vsnprintf(NULL, 0, fmt, ap);
 			va_end(ap);

@@ -1,7 +1,7 @@
 #ifndef __MUTEX_H__
 #define __MUTEX_H__
 
-#ifdef Linux
+#if defined(Linux) || defined(Darwin)
 
 #include <pthread.h>
 

@@ -9,10 +9,10 @@ class echo_client : public client {
 public:
 	echo_client(server_i* serv, SOCKET sock, const struct sockaddr_in& addr) :
 		client(serv, sock, addr), m_trace(Logger::instance()) {
-		int namelen = sizeof(m_peer);
+		socklen_t namelen = sizeof(m_peer);
 		getpeername(m_sock, (sockaddr*)&m_peer, &namelen);
 
-		unsigned int hostIp = ntohl(m_peer.sin_addr.S_un.S_addr);
+		unsigned int hostIp = ntohl(m_peer.sin_addr.s_addr);
 
 		m_trace.info("[%d] connected from %d.%d.%d.%d:%d",
 			m_sock,
@@ -40,7 +40,7 @@ public:
 
 	void on_closed(int ret)
 	{
-		unsigned int hostIp = ntohl(m_peer.sin_addr.S_un.S_addr);
+		unsigned int hostIp = ntohl(m_peer.sin_addr.s_addr);
 
 		m_trace.info("[%d] closed from %d.%d.%d.%d:%d",
 			m_sock,

@@ -3,7 +3,7 @@
 
 #include "default.h"
 
-#ifdef Linux
+#if defined(Linux) || defined(Darwin)
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -96,7 +96,11 @@ protected:
 			}
 			m_serv->on_accepted(newsock, newaddr);
 		} while (true);
+#ifdef WIN32
 		closesocket(m_sock);
+#else
+		close(m_sock);
+#endif
 		m_serv->stop();
 		m_trace.info("Listener finished.\n");
 	}
